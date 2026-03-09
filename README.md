@@ -1,4 +1,4 @@
-# Research Finance Tool
+# Research Income Distribution System (RIDS)
 
 Standalone Shiny app for:
 
