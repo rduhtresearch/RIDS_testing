@@ -614,7 +614,7 @@ ui <- fluidPage(
     div(class = "nhs-header-inner",
       div(class = "nhs-logo-block",
         div(
-          div(class = "nhs-app-title",    "Research Finance Tool"),
+          div(class = "nhs-app-title",    "Research Income Distribution System"),
           div(class = "nhs-app-subtitle", "Commercial Activity Costing & EDGE Template Generation")
         )
       ),
