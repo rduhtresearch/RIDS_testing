@@ -1,10 +1,68 @@
-library(shiny)
-library(DBI)
-library(duckdb)
-library(DT)
-library(dplyr)
-library(stringr)
-library(openxlsx)
+APP_PACKAGES <- c(
+  "shiny", "DBI", "duckdb", "DT", "dplyr", "stringr", "openxlsx",
+  "tidyr", "rlang", "purrr", "readr"
+)
+
+ensure_user_library <- function() {
+  user_lib <- Sys.getenv("R_LIBS_USER", unset = "")
+  if (!nzchar(user_lib)) return(invisible(NULL))
+
+  if (!dir.exists(user_lib)) {
+    dir.create(user_lib, recursive = TRUE, showWarnings = FALSE)
+  }
+
+  .libPaths(unique(c(
+    normalizePath(user_lib, winslash = "/", mustWork = FALSE),
+    .libPaths()
+  )))
+
+  invisible(user_lib)
+}
+
+ensure_packages <- function(pkgs) {
+  ensure_user_library()
+
+  repos <- getOption("repos")
+  cran_repo <- repos[["CRAN"]]
+  if (is.null(cran_repo) || is.na(cran_repo) ||
+      !nzchar(cran_repo) || identical(cran_repo, "@CRAN@")) {
+    options(repos = c(CRAN = "https://cloud.r-project.org"))
+  }
+
+  missing <- pkgs[!vapply(pkgs, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))]
+  if (length(missing) > 0) {
+    message("Installing missing R packages: ", paste(missing, collapse = ", "))
+    tryCatch(
+      install.packages(missing, dependencies = NA),
+      error = function(e) {
+        stop(
+          "Package bootstrap failed while installing: ",
+          paste(missing, collapse = ", "),
+          ". ",
+          conditionMessage(e),
+          call. = FALSE
+        )
+      }
+    )
+  }
+
+  still_missing <- pkgs[!vapply(pkgs, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))]
+  if (length(still_missing) > 0) {
+    stop(
+      "These R packages are still missing after install attempt: ",
+      paste(still_missing, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  invisible(lapply(pkgs, function(pkg) {
+    suppressPackageStartupMessages(
+      library(pkg, character.only = TRUE)
+    )
+  }))
+}
+
+ensure_packages(APP_PACKAGES)
 
 get_app_dir <- function() {
   frame_files <- vapply(sys.frames(), function(x) {
