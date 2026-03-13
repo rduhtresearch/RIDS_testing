@@ -26,20 +26,7 @@
 #   - A new entry function process_workbook() wires the two stages together.
 #   - All other logic is identical to the originals — no renames, no rewrites.
 
-if (!exists("APP_DIR", inherits = TRUE)) {
-  frame_files <- vapply(sys.frames(), function(x) {
-    if (!is.null(x$ofile)) normalizePath(x$ofile, winslash = "/", mustWork = FALSE) else NA_character_
-  }, character(1))
-  frame_files <- frame_files[!is.na(frame_files)]
-
-  APP_DIR <- if (length(frame_files) > 0) {
-    dirname(frame_files[[length(frame_files)]])
-  } else {
-    normalizePath(getwd(), winslash = "/", mustWork = FALSE)
-  }
-}
-
-source(file.path(APP_DIR, "utils", "add_study_arm.r"))
+source('/Users/tategraham/Documents/NHS/research_finance_tool/R/utils/add_study_arm.r')
 
 suppressPackageStartupMessages({
   library(openxlsx)
@@ -424,8 +411,10 @@ run_stage_a <- function(input_file, db_dir = NULL) {
   
   data %>%
     pivot_longer(cols = all_of(visit_cols), names_to = "Visit", values_to = "is_activity") %>%
-    filter(is_activity == 1) %>%
-    select(Visit, Activity, everything(), -is_activity)
+    mutate(is_activity = as.integer(is_activity)) %>%
+    filter(is_activity >= 1L) %>%
+    uncount(is_activity) %>%
+    select(Visit, Activity, everything())
 }
 
 .format_ua_columns <- function(data) {
