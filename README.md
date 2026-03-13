@@ -1,4 +1,8 @@
-# Research Finance Tool
+# Research Income Distribution System (RIDS)
+
+**Technical Lead:** Tate Graham — tate.graham2@nhs.net
+
+> **Note:** This is a demo environment for internal testing.
 
 ## Before you start
 
@@ -76,4 +80,4 @@ Check:
 - you are running the command from the correct folder
 - you are connected to the internet on first run
 
-If it still does not work, send the error message to the project owner or IT support.
+If it still does not work, send the error message to the project developer.
