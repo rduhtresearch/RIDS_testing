@@ -12,7 +12,7 @@ You will need:
 - internet access the first time you run the app
 - the full project folder, including the `data` folder
 
-If `R` is not already installed, ask your IT team.
+If `R` is not already installed, please install via software centre.
 
 ## Download the project from GitHub
 
