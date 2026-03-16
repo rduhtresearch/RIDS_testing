@@ -1,6 +1,6 @@
 APP_PACKAGES <- c(
   "shiny", "DBI", "duckdb", "DT", "dplyr", "stringr", "openxlsx",
-  "tidyr", "rlang", "purrr", "readr"
+  "tidyr", "rlang", "purrr", "readr", "here"
 )
 
 ensure_user_library <- function() {
