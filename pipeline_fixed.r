@@ -27,7 +27,6 @@
 #   - All other logic is identical to the originals — no renames, no rewrites.
 
 suppressPackageStartupMessages({
-  library(here)
   library(openxlsx)
   library(dplyr)
   library(tidyr)
@@ -35,7 +34,7 @@ suppressPackageStartupMessages({
   library(purrr)
 })
 
-source(here("utils", "add_study_arm.r"))
+source(file.path(APP_DIR, "utils", "add_study_arm.r"))
 
 require_pkg <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
