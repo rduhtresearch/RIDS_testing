@@ -26,15 +26,16 @@
 #   - A new entry function process_workbook() wires the two stages together.
 #   - All other logic is identical to the originals — no renames, no rewrites.
 
-source('/Users/tategraham/Documents/NHS/research_finance_tool/R/utils/add_study_arm.r')
-
 suppressPackageStartupMessages({
+  library(here)
   library(openxlsx)
   library(dplyr)
   library(tidyr)
   library(rlang)
   library(purrr)
 })
+
+source(here("utils", "add_study_arm.r"))
 
 require_pkg <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
